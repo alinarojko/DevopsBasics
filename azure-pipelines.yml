@@ -30,3 +30,20 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'war_file_published'
     publishLocation: 'Container'
+
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    downloadPath: '$(System.ArtifactsDirectory)'
+
+- task: AzureRmWebAppDeployment@5
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(0fce5dd2-6871-4d39-86eb-b84f2dd7e7a8)'
+    appType: 'webAppLinux'
+    WebAppName: 'DevopsBasics'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.war'
+    RuntimeStack: 'TOMCAT|10.1-java17'
+    DeploymentTypeLinux: 'oneDeploy'
+
